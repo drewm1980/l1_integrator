@@ -43,16 +43,19 @@ def integrate_trap(fc,u,t1,t2,N,implementation=2):
             hb=hs(i+1)
             samesign=casadi.sign(fa)==casadi.sign(fb)
             F=F+casadi.if_else(samesign,trapezoid_area(ha,hb,dt),
-                                        bowtie_area(ha,hb,dt))
+                               bowtie_area(ha,hb,dt))
+
     if implementation==2:
         # This formulation theoretically allows use of SIMD (vector) extensions
         for i in xrange(len(fs)-1):
             fa=fs[i]
             fb=fs[i+1]
-            ha=hs(i)
-            hb=hs(i+1)
+            ha=hs[i]
+            hb=hs[i+1]
             ha_plus_hb=ha+hb
             F=F+ha_plus_hb + (fa*fb-ha*hb)/ha_plus_hb
+
         F=F*dt/2
+
     return F,grid
 

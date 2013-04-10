@@ -86,10 +86,7 @@ def visualize_derivatives(u,fc,t1,t2):
 
 if __name__=='__main__':
 
-    u = ssym("u") # Variable that is optimized
-    def fc(u,t):
-        return u*sin(.3*t) - cos(.4*t)
-    t1 = 0.0; t2 = 1.0;
+    from optimization_problems import u, fc,t1,t2
 
     compare_midpoint_to_trapezoid_rule(u,fc,t1,t2)
     visualize_derivatives(u,fc,t1,t2)
