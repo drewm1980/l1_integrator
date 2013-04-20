@@ -10,7 +10,9 @@ def integrate_rect(fc,u,t1,t2,N):
     dt = grid[1] - grid[0]
     fs = [fc(u,t+dt/2) for t in grid[:-1]] # f at the midpoints
     Fi = [fabs(f) for f in fs]
-    return dt*sum(Fi),grid
+    F = dt*sum(Fi)
+    assert F.numel() == 1
+    return F,grid
 
 # Compute the area of a bowtie.
 # Here, a "bowtie" consists of two right triangles
@@ -32,6 +34,8 @@ def integrate_trap(fc,u,t1,t2,N,implementation=2):
     grid = np.linspace(t1,t2,N+1)
     dt = grid[1] - grid[0]
     fs = [fc(u,t) for t in grid] # f on grid
+    if type(fs[0]) == casadi.SXMatrix:
+        assert fs[0].numel() == 1
     hs = [fabs(f) for f in fs] # absolute values of f on grid
     F=0
     if implementation==1:
@@ -56,6 +60,7 @@ def integrate_trap(fc,u,t1,t2,N,implementation=2):
             F=F+ha_plus_hb + (fa*fb-ha*hb)/ha_plus_hb
 
         F=F*dt/2
-
+    if type(F) == casadi.SXMatrix:
+        assert F.numel() == 1
     return F,grid
 

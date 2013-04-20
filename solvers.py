@@ -56,6 +56,8 @@ def solve_trapezoidal_slacks(fc,u,t1,t2,N=100):
     print solver.output('x')
     return solver.output('x')
 
+solvers = [solve_trapezoidal_direct, solve_trapezoidal_slacks]
+
 if __name__=='__main__':
     from optimization_problems import u,t1,t2,fc
     u1 = solve_trapezoidal_direct(fc,u,t1,t2,N=100)
